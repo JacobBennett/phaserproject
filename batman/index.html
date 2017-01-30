@@ -6,6 +6,7 @@
     <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
     <script type="text/javascript" src="Bullet.js"></script>
     <script type="text/javascript" src="Slime.js"></script>
+    <script type="text/javascript" src="HealthBar.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -60,17 +61,17 @@ function create() {
     ground.body.immovable = true;
 
     //  Now let's create two ledges
-    // right top ledge
-    ledge = platforms.create(450, 250, 'ground');
-    ledge.body.immovable = true;
-    // right bottom ledge
-    ledge = platforms.create(450, 400, 'ground');
-    ledge.body.immovable = true;
-    // left top ledge
+    // left top ledge L1
     ledge = platforms.create(-75, 250, 'ground');
     ledge.body.immovable = true;
-    // left bottom ledge
+    // left bottom ledge L2
     ledge = platforms.create(-75, 400, 'ground');
+    ledge.body.immovable = true;
+    // right top ledge R1
+    ledge = platforms.create(450, 250, 'ground');
+    ledge.body.immovable = true;
+    // right bottom ledge R2
+    ledge = platforms.create(450, 400, 'ground');
     ledge.body.immovable = true;
 
 
@@ -89,6 +90,10 @@ function create() {
     player.animations.add('jumpleft', [10], 10, true);
     player.animations.add('jumpright', [9], 10, true);
 
+    // Health bar
+    var barConfig = {x: 200, y: 100};
+    this.myHealthBar = new HealthBar(this.game, {x: 675, y: 40});
+
     // the bullet group contains all bullets and enables physics on them.
     bullets = game.add.group();
     bullets.enableBody = true;
@@ -96,10 +101,41 @@ function create() {
     // the slime group contains all slimes and enables physics on them. The for loop adds slimes to the game.
     slimes = game.add.group();
     slimes.enableBody = true;
-    for (var i = 0; i < 9; i++) {
-        var slime = new Slime(game, i * 128, i * 32, 50);
-        slimes.add(slime);
-    }
+
+    let slimeLocations = [
+        // Platform L1
+        [10, 220],
+        [150, 220],
+        
+        // Platform L2
+        [10, 375],
+        [200, 375],
+
+        // Platform R1
+        [500, 220],
+        [700, 220],
+
+        // Platform R2
+        [500, 375],
+        [700, 375],
+
+        // Ground Platform
+        [150, 510],
+        [350, 510],
+        [650, 510]
+    ];
+
+    let offset = 250;
+    slimeLocations.forEach(function (location) {
+
+        setTimeout(() => {
+            var slime = new Slime(game, location[0], location[1]);
+            slimes.add(slime);    
+        }, 500 + offset);
+        offset += 500;
+
+    });
+
 
     // this makes the spacebar the key that shoots bullets
     spaceBar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -107,9 +143,6 @@ function create() {
     cursors = game.input.keyboard.createCursorKeys();
 
 }
-
-
-
 
 
 function update() {
