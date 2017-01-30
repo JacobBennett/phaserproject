@@ -27,7 +27,7 @@ Bullet.prototype.update = function() {
         this.body.velocity.x = this.xSpeed;
     }
 
-    if(this.x < 0 || this.x > 680) {
+    if(this.x < 0 || this.x > game.width) {
         this.destroy();
     }
 
