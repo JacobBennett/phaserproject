@@ -34,6 +34,10 @@ var bullets;
 
 var player;
 
+var healthbar;
+var playerHealth = 100;
+var invincible = false;
+
 var cursors;
 var spaceBar;
 
@@ -92,7 +96,7 @@ function create() {
 
     // Health bar
     var barConfig = {x: 200, y: 100};
-    this.myHealthBar = new HealthBar(this.game, {x: 675, y: 40});
+    healthbar = new HealthBar(this.game, {x: 675, y: 40});
 
     // the bullet group contains all bullets and enables physics on them.
     bullets = game.add.group();
@@ -150,6 +154,33 @@ function update() {
     var hitPlatform = game.physics.arcade.collide(player, platforms);
 
     var hitSlime = game.physics.arcade.collide(player, slimes);
+
+
+    // health and stuffs
+
+    if (hitSlime && ! invincible) {
+        playerHealth -= 10;
+        healthbar.setPercent(playerHealth);
+        makeInvincible();
+        setTimeout(() => notInvincible(), 1000);
+    }
+
+    function makeInvincible() {
+        invincible = true;
+        player.alpha = 0.2;
+    }
+
+    function notInvincible() {
+        invincible = false;
+        player.alpha = 1;
+    }
+
+    if (playerHealth == 0) {
+        player.kill();
+    }
+
+
+
     
     // helper
     function playerIsOnGround() {
