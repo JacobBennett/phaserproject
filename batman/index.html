@@ -186,8 +186,10 @@ function update() {
 
     if (playerHealth == 1) {
         player.kill();
+        return setTimeout(() => game.add.text(315, 100, 'Game Over', { fontSize: '40px', fill: '#000' }), 1000);
     }
     
+    // increases the score by 10 when a slime hit by a bullet
     function killSlime(bullets, slimes) {
         slimes.kill();
         
