@@ -34,6 +34,7 @@ var bullets;
 
 var player;
 
+var healthText;
 var healthbar;
 var playerHealth = 100;
 var invincible = false;
@@ -44,6 +45,9 @@ var spaceBar;
 var direction = 1;
 
 var bulletXSpeed = 300;
+
+var score = 0;
+var scoreText;
 
 function create() {
 
@@ -125,7 +129,6 @@ function create() {
 
         // Ground Platform
         [150, 510],
-        [350, 510],
         [650, 510]
     ];
 
@@ -139,6 +142,10 @@ function create() {
         offset += 500;
 
     });
+    
+    scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+    
+    healthText = game.add.text(575, 3, 'health');
 
 
     // this makes the spacebar the key that shoots bullets
@@ -154,12 +161,14 @@ function update() {
     var hitPlatform = game.physics.arcade.collide(player, platforms);
 
     var hitSlime = game.physics.arcade.collide(player, slimes);
+    
+    game.physics.arcade.collide(bullets, slimes, killSlime, null, this);
 
 
     // health and stuffs
 
     if (hitSlime && ! invincible) {
-        playerHealth -= 10;
+        playerHealth -= 33;
         healthbar.setPercent(playerHealth);
         makeInvincible();
         setTimeout(() => notInvincible(), 1000);
@@ -175,12 +184,16 @@ function update() {
         player.alpha = 1;
     }
 
-    if (playerHealth == 0) {
+    if (playerHealth == 1) {
         player.kill();
     }
-
-
-
+    
+    function killSlime(bullets, slimes) {
+        slimes.kill();
+        
+        score += 10;
+        scoreText.text = 'score: ' + score;
+    }
     
     // helper
     function playerIsOnGround() {
