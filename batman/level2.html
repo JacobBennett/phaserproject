@@ -68,18 +68,27 @@ function create() {
     //  This stops it from falling away when you jump on it
     ground.body.immovable = true;
 
-    //  Now let's create two ledges
-    // left top ledge L1
-    ledge = platforms.create(-75, 250, 'ground');
+    // Now let's create two ledges
+    // Top center ledge C1
+    ledge = platforms.create(200, 125, 'ground');
     ledge.body.immovable = true;
-    // left bottom ledge L2
-    ledge = platforms.create(-75, 400, 'ground');
+    // Center ledge C2
+    ledge = platforms.create(200, 275, 'ground');
     ledge.body.immovable = true;
-    // right top ledge R1
-    ledge = platforms.create(450, 250, 'ground');
+    // Bottom center ledge C3
+    ledge = platforms.create(200, 425, 'ground');
     ledge.body.immovable = true;
-    // right bottom ledge R2
-    ledge = platforms.create(450, 400, 'ground');
+    // Left upper ledge L1
+    ledge = platforms.create(-300, 200, 'ground');
+    ledge.body.immovable = true;
+    // Right upper R1
+    ledge = platforms.create (700, 200, 'ground');
+    ledge.body.immovable = true;
+    // Left lower ledge L2
+    ledge = platforms.create(-300, 365, 'ground');
+    ledge.body.immovable = true;
+    // Right lower ledge R2
+    ledge = platforms.create (700, 365, 'ground');
     ledge.body.immovable = true;
 
 
@@ -89,7 +98,7 @@ function create() {
     //  Player physics properties. Give the little guy a slight bounce.
     game.physics.arcade.enable(player);
     player.body.bounce.y = 0.0;
-    player.body.gravity.y = 400;
+    player.body.gravity.y = 525;
     player.body.collideWorldBounds = true;
 
     //  Our three animations, walking left ,right and jumping.
@@ -111,26 +120,30 @@ function create() {
     slimes.enableBody = true;
 
     let slimeLocations = [
-        // Platform L1
-        [10, 220],
-        [150, 220],
+        // C1
+        [225, 100],
+        [445, 100],
         
-        // Platform L2
-        [10, 375],
-        [200, 375],
+        // L1
+        [15, 175],
 
-        // Platform R1
-        [500, 220],
-        [700, 220],
-
-        // Platform R2
-        [500, 375],
-        [700, 375],
-
-        // Ground Platform
-        [150, 510],
-        [650, 510]
-    ];
+        // R1
+        [750, 175],
+        
+        // C2
+        [225, 250],
+        [445, 250],
+        
+        // L2
+        [15, 330],
+        
+        // R2
+        [750, 330],
+        
+        // C3
+        [225, 400],
+        [445, 400],
+];
 
     let offset = 250;
     slimeLocations.forEach(function (location) {
@@ -198,7 +211,7 @@ function update() {
     }
 
     if (score == 100){
-        setTimeout(() => game.add.text(330, 100, 'You Win!', { fontSize: '40px', fill: '#ffd799'}), 500);
+        setTimeout(() => game.add.text(330, 200, 'You Win!', { fontSize: '40px', fill: '#ffd799'}), 500);
     }
 
     // helper
