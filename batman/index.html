@@ -162,7 +162,7 @@ function update() {
 
     var hitSlime = game.physics.arcade.collide(player, slimes);
     
-    game.physics.arcade.collide(bullets, slimes, killSlime, null, this);
+    var killSlime = game.physics.arcade.overlap(bullets, slimes);
 
 
     // health and stuffs
@@ -186,17 +186,21 @@ function update() {
 
     if (playerHealth == 1) {
         player.kill();
-        return setTimeout(() => game.add.text(315, 100, 'Game Over', { fontSize: '40px', fill: '#000' }), 1000);
+        setTimeout(() => game.add.text(315, 100, 'Game Over', { fontSize: '40px', fill: '#000' }), 500);
+        setTimeout(() => location.reload(), 1500);
     }
     
+    
     // increases the score by 10 when a slime hit by a bullet
-    function killSlime(bullets, slimes) {
-        slimes.kill();
-        
+    if (killSlime) {
         score += 10;
         scoreText.text = 'score: ' + score;
     }
-    
+
+    if (score == 100){
+        setTimeout(() => game.add.text(330, 100, 'You Win!', { fontSize: '40px', fill: '#ffd799'}), 500);
+    }
+
     // helper
     function playerIsOnGround() {
         return player.body.touching.down && hitPlatform;
